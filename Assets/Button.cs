@@ -6,10 +6,18 @@ using TMPro;
 public class Button : MonoBehaviour, Interactable
 {
     public TextMeshPro displayMesh;
-    private float counter = 10 * 1000;
+    private float counter;
+
+    public float maxCounter = 11 * 1000;
+
+    private float maxTimeShown = 10 * 1000;
+
+    void Start() {
+        counter = maxCounter;
+    }
 
     public void Interact() {
-        counter = 10 * 1000;
+        counter = maxCounter;
         UpdateText();
     }
 
@@ -19,6 +27,10 @@ public class Button : MonoBehaviour, Interactable
     }
 
     private void UpdateText() {
-        displayMesh.text = string.Format("{0:0.00}", counter / 1000f);
+        if (counter < maxTimeShown) {
+            displayMesh.text = string.Format("{0:0.00}", counter / 1000f);
+        } else {
+            displayMesh.text = string.Format("{0:0.00}", maxTimeShown / 1000f);
+        }
     }
 }
