@@ -61,8 +61,15 @@ public class Counter : Interactable
         textMesh.transform.SetParent(transform, true);
         textMesh.transform.localPosition = textPosition;
         textMesh.AddComponent<TextMeshPro>();
-        textMesh.GetComponent<TextMeshPro>().text = string.Format("{0:0.00}", counter / 1000f);
-        textMesh.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
-        textMesh.GetComponent<TextMeshPro>().fontSize = 10f;
+        TextMeshPro textMeshPro = textMesh.GetComponent<TextMeshPro>();
+        textMeshPro.text = string.Format("{0:0.00}", counter / 1000f);
+        textMeshPro.alignment = TextAlignmentOptions.Center;
+        textMeshPro.fontSize = 10f;
+        textMeshPro.outlineWidth = 0.2f;
+        textMeshPro.outlineColor = Color.black;
+
+        // add outline material
+        Material material = new Material(Shader.Find("TextMeshPro/Distance Field"));
+        
     }
 }

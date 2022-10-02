@@ -26,20 +26,18 @@ public class Player : MonoBehaviour
         }
     
         if (Input.GetKeyDown(KeyCode.Space)) {
-            Interactable[] interactables = GameObject.FindObjectsOfType<Interactable>();
+            TryInteract();
+        }
+    }
 
-            Interactable closest = null;
-            float closestDistance = Mathf.Infinity;
-            foreach (Interactable interactable in interactables) {
-                float distance = Vector3.Distance(transform.position, interactable.transform.position);
-                if (distance < closestDistance) {
-                    closest = interactable;
-                    closestDistance = distance;
-                }
-            }
+    void TryInteract() {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 2.0f);
 
-            if (closest != null && closestDistance < 3) {
-                closest.Interact();
+        foreach (Collider collider in colliders) {
+            Interactable interactable = collider.GetComponent<Interactable>();
+            if (interactable != null) {
+                interactable.Interact();
+                break;
             }
         }
     }
