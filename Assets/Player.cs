@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     public float speed = 10.0f;
     private CharacterController controller;
 
+    private GameObject holding;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -16,7 +18,7 @@ public class Player : MonoBehaviour
     {
         Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));   
 
-        if (direction.magnitude > 0.3) {
+        if (direction.magnitude > 0.01f) {
             direction.Normalize();
             
             controller.Move(direction * speed * Time.deltaTime);
@@ -28,17 +30,70 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) {
             TryInteract();
         }
+
+        if (Input.GetKeyDown(KeyCode.E)) {
+            bool hasPickedUp = TryPickup();
+            if (!hasPickedUp) {
+                Drop();
+            }
+        }
     }
 
-    void TryInteract() {
+    bool TryInteract() {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 2.0f);
 
         foreach (Collider collider in colliders) {
             Interactable interactable = collider.GetComponent<Interactable>();
             if (interactable != null) {
                 interactable.Interact();
-                break;
+                return true;
             }
         }
+
+        return false;
+    }
+
+    bool TryPickup() {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 2.0f);
+
+        foreach (Collider collider in colliders) {
+            PickupItem pickupItem = collider.GetComponent<PickupItem>();
+            if (pickupItem != null) {
+                if (holding != null && pickupItem.gameObject == holding) {
+                    continue;
+                }
+
+                Pickup(pickupItem.gameObject);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void Pickup(GameObject pickupItem) {    
+        if (holding != null) {
+            Drop();
+        }
+        pickupItem.transform.parent = transform;
+        pickupItem.transform.localPosition = new Vector3(0, 1.5f, 1.5f);
+        pickupItem.transform.localRotation = Quaternion.identity;
+
+        pickupItem.GetComponent<Rigidbody>().useGravity = false;
+        pickupItem.GetComponent<Rigidbody>().isKinematic = true;
+
+        holding = pickupItem;
+    }
+
+    void Drop() {
+        if (holding == null) {
+            return;
+        }
+        holding.transform.parent = null;
+        holding.GetComponent<Rigidbody>().useGravity = true;
+        holding.GetComponent<Rigidbody>().isKinematic = false;
+
+        holding.GetComponent<Rigidbody>().AddForce(transform.forward * 3.0f, ForceMode.Impulse);
+
+        holding = null;
     }
 }
