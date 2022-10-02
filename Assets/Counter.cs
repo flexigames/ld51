@@ -8,9 +8,13 @@ public class Counter : Interactable
     private float maxTime = 10 * 1000;
     private float counter;
 
-    private bool running = false;
+    public bool running = false;
 
     private float startProbablity = 0.0008f;
+
+    public Vector3 textPosition = new Vector3(0, 2f, 0);
+
+    private GameObject textMesh;
 
     void Start()
     {  
@@ -49,12 +53,13 @@ public class Counter : Interactable
         } else {
             transform.Find("TextMesh").GetComponent<TextMeshPro>().text = "";
         }
+        textMesh.transform.localPosition = textPosition;
     }
 
     void InitializeTextMesh() {
-        GameObject textMesh = new GameObject("TextMesh");
+        textMesh = new GameObject("TextMesh");
         textMesh.transform.SetParent(transform, true);
-        textMesh.transform.localPosition = new Vector3(0, 1.5f, 0);
+        textMesh.transform.localPosition = textPosition;
         textMesh.AddComponent<TextMeshPro>();
         textMesh.GetComponent<TextMeshPro>().text = string.Format("{0:0.00}", counter / 1000f);
         textMesh.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
