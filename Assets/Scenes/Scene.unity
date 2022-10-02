@@ -40031,6 +40031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4187373110133453081b89be4ea9921f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: 
 --- !u!54 &518869623
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -40288,6 +40289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4187373110133453081b89be4ea9921f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: laptop
 --- !u!65 &772229121
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40391,6 +40393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4187373110133453081b89be4ea9921f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: book
 --- !u!54 &828980576
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -91381,6 +91384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b39309bfcb5446958c446c26527bab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptsItemType: book
 --- !u!1 &1977376013 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1fabe4dd7dbef4a44982242e68935075, type: 3}
@@ -91427,6 +91431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4187373110133453081b89be4ea9921f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: book
 --- !u!1 &1998162618 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dfa110515897449afb7ce833672af789, type: 3}

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class DropoffLocation : MonoBehaviour
 {
-
+    public string acceptsItemType;
 }

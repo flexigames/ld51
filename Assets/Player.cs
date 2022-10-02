@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
         Collider[] colldiers = Physics.OverlapSphere(transform.position, 2.0f);
         foreach (Collider collider in colldiers) {
             DropoffLocation dropoff = collider.GetComponent<DropoffLocation>();
-            if (dropoff != null) {
+            if (dropoff != null && dropoff.acceptsItemType == holding.GetComponent<PickupItem>().itemType) {
                 Destroy(holding.gameObject);
                 holding = null;
                 return true;
