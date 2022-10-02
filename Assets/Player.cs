@@ -26,11 +26,11 @@ public class Player : MonoBehaviour
         }
     
         if (Input.GetKeyDown(KeyCode.Space)) {
-            GameObject[] interactables = GameObject.FindGameObjectsWithTag("Interactable");
+            Interactable[] interactables = GameObject.FindObjectsOfType<Interactable>();
 
-            GameObject closest = null;
+            Interactable closest = null;
             float closestDistance = Mathf.Infinity;
-            foreach (GameObject interactable in interactables) {
+            foreach (Interactable interactable in interactables) {
                 float distance = Vector3.Distance(transform.position, interactable.transform.position);
                 if (distance < closestDistance) {
                     closest = interactable;
@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
             }
 
             if (closest != null && closestDistance < 3) {
-                closest.GetComponent<Interactable>().Interact();
+                closest.Interact();
             }
         }
     }

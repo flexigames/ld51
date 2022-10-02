@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Button : MonoBehaviour, Interactable
+public class Button : Interactable
 {
     public TextMeshPro displayMesh;
     private float counter;
@@ -16,7 +16,7 @@ public class Button : MonoBehaviour, Interactable
         counter = maxCounter;
     }
 
-    public void Interact() {
+    public override void Interact() {
         counter = maxCounter;
         UpdateText();
     }
