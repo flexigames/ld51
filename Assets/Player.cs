@@ -32,9 +32,10 @@ public class Player : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.E)) {
-            bool hasPickedUp = TryPickup();
-            if (!hasPickedUp) {
+            if (holding != null) {
                 Drop();
+            } else {
+                TryPickup();
             }
         }
     }
