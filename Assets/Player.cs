@@ -33,11 +33,25 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E)) {
             if (holding != null) {
+                TryUseDropoff();
                 Drop();
             } else {
                 TryPickup();
             }
         }
+    }
+
+    bool TryUseDropoff() {
+        Collider[] colldiers = Physics.OverlapSphere(transform.position, 2.0f);
+        foreach (Collider collider in colldiers) {
+            DropoffLocation dropoff = collider.GetComponent<DropoffLocation>();
+            if (dropoff != null) {
+                Destroy(holding.gameObject);
+                holding = null;
+                return true;
+            }
+        }
+        return false;
     }
 
     bool TryInteract() {
