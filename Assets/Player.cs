@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 
     private GameObject holding;
 
+    private float interactDistance = 3.0f;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -25,23 +27,33 @@ public class Player : MonoBehaviour
 
             transform.rotation = Quaternion.LookRotation(direction);
         }
-    
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            TryInteract();
-        }
 
-        if (Input.GetKeyDown(KeyCode.E)) {
-            if (holding != null) {
-                TryUseDropoff();
-                Drop();
-            } else {
-                TryPickup();
-            }
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
+            OnButtonPress();
+        }
+    }
+
+    void OnDrawGizmos() {
+        Gizmos.DrawWireSphere(transform.position, interactDistance);
+    }
+
+    void OnButtonPress() {
+        var interacted = TryInteract();
+
+        if (interacted) return;
+
+        if (holding != null) {
+            var droppedOff = TryUseDropoff();
+            Debug.Log(droppedOff ? "Dropped off somewhere" : "Dropped on floor");
+            Drop();
+        } else {
+            var pickedUp = TryPickup();
+            Debug.Log(pickedUp ? "Picked up something" : "Nothing to pick up");
         }
     }
 
     bool TryUseDropoff() {
-        Collider[] colldiers = Physics.OverlapSphere(transform.position, 3.0f);
+        Collider[] colldiers = Physics.OverlapSphere(transform.position, interactDistance);
         foreach (Collider collider in colldiers) {
             DropoffLocation dropoff = collider.GetComponent<DropoffLocation>();
             if (dropoff != null && dropoff.acceptsItemType == holding.GetComponent<PickupItem>().itemType) {
@@ -54,7 +66,7 @@ public class Player : MonoBehaviour
     }
 
     bool TryInteract() {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 2.0f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
 
         foreach (Collider collider in colliders) {
             Interactable interactable = collider.GetComponent<Interactable>();
@@ -68,7 +80,7 @@ public class Player : MonoBehaviour
     }
 
     bool TryPickup() {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 2.0f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
 
         foreach (Collider collider in colliders) {
             PickupItem pickupItem = collider.GetComponent<PickupItem>();
@@ -106,7 +118,9 @@ public class Player : MonoBehaviour
         holding.GetComponent<Rigidbody>().useGravity = true;
         holding.GetComponent<Rigidbody>().isKinematic = false;
 
-        holding.GetComponent<Rigidbody>().AddForce(transform.forward * 3.0f, ForceMode.Impulse);
+        var force = transform.forward * 5.0f;
+
+        holding.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
 
         holding = null;
     }
@@ -115,22 +129,14 @@ public class Player : MonoBehaviour
     {
         Rigidbody body = hit.collider.attachedRigidbody;
 
-        // no rigidbody
         if (body == null || body.isKinematic)
             return;
 
-        // We dont want to push objects below us
         if (hit.moveDirection.y < -0.3f)
             return;
 
-        // Calculate push direction from move direction,
-        // we only push objects to the sides never up and down
         Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
 
-        // If you know how fast your character is trying to move,
-        // then you can also multiply the push velocity by that.
-
-        // Apply the push
         body.velocity = pushDir * 3.0f;
     }
 }

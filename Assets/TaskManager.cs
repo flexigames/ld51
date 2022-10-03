@@ -8,13 +8,25 @@ public class TaskManager : MonoBehaviour
     public TextMeshProUGUI taskText;
 
     private List<CompletableTask> tasks = new List<CompletableTask>() {
-        new CompletableTask("books", "Put all books in the shelf", 2),
-        new CompletableTask("kitchen", "Do the dishes", 3),
-        new CompletableTask("laundry", "Pick up laundry from the floor", 3)
+        new CompletableTask("books", "Put all books in the shelf", "book"),
+        new CompletableTask("kitchen", "Do the dishes", "plate"),
+        new CompletableTask("laundry", "Pick up laundry from the floor", "clothing")
     };
 
     void Start() {
+        CalculateNumberOfSteps();
         PrintTasks();
+    }
+
+    void CalculateNumberOfSteps() {
+        PickupItem[] pickupItems = FindObjectsOfType<PickupItem>();
+        foreach (PickupItem pickupItem in pickupItems) {
+            CompletableTask task = tasks.Find(t => t.itemType == pickupItem.itemType);
+            if (task != null) {
+                task.totalSteps++;
+            }
+        }
+
     }
 
     public void IncreaseSteps(string taskId)
@@ -39,13 +51,14 @@ public class CompletableTask
 {
     public string id;
     public string name;
-    public int totalSteps;
+    public string itemType;
+    public int totalSteps = 0;
     public int completedSteps = 0;
 
-    public CompletableTask(string id, string name, int totalSteps)
+    public CompletableTask(string id, string name, string itemType)
     {
         this.id = id;
         this.name = name;
-        this.totalSteps = totalSteps;
+        this.itemType = itemType;
     }
 }
