@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
             
             controller.Move(direction * speed * Time.deltaTime);
 
-
             transform.rotation = Quaternion.LookRotation(direction);
         }
     
@@ -46,7 +45,7 @@ public class Player : MonoBehaviour
         foreach (Collider collider in colldiers) {
             DropoffLocation dropoff = collider.GetComponent<DropoffLocation>();
             if (dropoff != null && dropoff.acceptsItemType == holding.GetComponent<PickupItem>().itemType) {
-                Destroy(holding.gameObject);
+                dropoff.DropOff(holding.gameObject);
                 holding = null;
                 return true;
             }
