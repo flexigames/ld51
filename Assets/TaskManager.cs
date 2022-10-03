@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TaskManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class TaskManager : MonoBehaviour
 
     void Start() {
         CalculateNumberOfSteps();
-        PrintTasks();
+        UpdateText();
     }
 
     void CalculateNumberOfSteps() {
@@ -29,15 +30,31 @@ public class TaskManager : MonoBehaviour
 
     }
 
+    void CheckAllStepsDone() {
+        bool allDone = true;
+        foreach (CompletableTask task in tasks) {
+            if (!task.IsDone()) {
+                allDone = false;
+                break;
+            }
+        }
+
+        if (allDone) {
+            GlobalState.time = FindObjectOfType<GameTimer>().timeSpent;
+            SceneManager.LoadScene("EndScreen");
+        }
+    }
+
     public void IncreaseSteps(string taskId)
     {
         CompletableTask task = tasks.Find(t => t.id == taskId);
         task.completedSteps++;
 
-        PrintTasks();
+        UpdateText();
+        CheckAllStepsDone();
     }
 
-    public void PrintTasks()
+    public void UpdateText()
     {
         string text = "";
         foreach (CompletableTask task in tasks) {
@@ -60,5 +77,9 @@ public class CompletableTask
         this.id = id;
         this.name = name;
         this.itemType = itemType;
+    }
+
+    public bool IsDone() {
+        return completedSteps >= totalSteps;
     }
 }

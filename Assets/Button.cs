@@ -26,7 +26,7 @@ public class Button : Interactable
         counter -= Time.deltaTime * 1000.0f;
 
         if (counter < 0) {
-            SceneManager.LoadScene("StartMenu");
+            SceneManager.LoadScene("GameOver");
         }
         UpdateText();
     }
