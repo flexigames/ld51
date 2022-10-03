@@ -11,7 +11,11 @@ public class Player : MonoBehaviour
 
     private float interactDistance = 3.0f;
 
-    public Animator animator;
+    public AudioClip pickupSound;
+    public AudioClip dropoffSound;
+    public AudioClip successSound;
+    public AudioClip typingSound;
+
 
     void Start()
     {
@@ -59,6 +63,7 @@ public class Player : MonoBehaviour
             DropoffLocation dropoff = collider.GetComponent<DropoffLocation>();
             if (dropoff != null && dropoff.acceptsItemType == holding.GetComponent<PickupItem>().itemType) {
                 dropoff.DropOff(holding.gameObject);
+                PlaySound(successSound);
                 holding = null;
                 return true;
             }
@@ -73,6 +78,7 @@ public class Player : MonoBehaviour
             Interactable interactable = collider.GetComponent<Interactable>();
             if (interactable != null) {
                 interactable.Interact();
+                PlaySound(typingSound);
                 return true;
             }
         }
@@ -101,6 +107,7 @@ public class Player : MonoBehaviour
         if (holding != null) {
             Drop();
         }
+        PlaySound(pickupSound);
         pickupItem.transform.parent = transform;
         pickupItem.transform.localPosition = new Vector3(0, 1.5f, 1.5f);
         pickupItem.transform.localRotation = Quaternion.identity;
@@ -115,6 +122,8 @@ public class Player : MonoBehaviour
         if (holding == null) {
             return;
         }
+        PlaySound(dropoffSound);
+
         holding.transform.parent = null;
         holding.GetComponent<Rigidbody>().useGravity = true;
         holding.GetComponent<Rigidbody>().isKinematic = false;
@@ -139,5 +148,10 @@ public class Player : MonoBehaviour
         Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
 
         body.velocity = pushDir * 3.0f;
+    }
+
+    void PlaySound(AudioClip clip) {
+        var audio = GetComponent<AudioSource>();
+        audio.PlayOneShot(clip);
     }
 }
