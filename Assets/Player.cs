@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
 
     private float interactDistance = 3.0f;
 
+    public Animator animator;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -27,7 +29,6 @@ public class Player : MonoBehaviour
 
             transform.rotation = Quaternion.LookRotation(direction);
         }
-
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
             OnButtonPress();
         }
