@@ -7,6 +7,8 @@ public class MenuManager : MonoBehaviour
 {
     public GameObject startButton;
 
+    public string nextScene;
+
     void Update() {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -14,7 +16,7 @@ public class MenuManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit)) {
             if (hit.collider.gameObject == startButton) {
                 if (Input.GetMouseButtonDown(0)) {
-                    SceneManager.LoadScene("Scene", LoadSceneMode.Single);
+                    SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
                 }
             }
         }
