@@ -16,6 +16,10 @@ public class Player : MonoBehaviour
     public AudioClip successSound;
     public AudioClip typingSound;
 
+    public GameObject runningCloudPrefab;
+
+    private Queue<GameObject> runningCloudQueue = new Queue<GameObject>();
+
 
     void Start()
     {
@@ -24,17 +28,38 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));   
+        HandleRunning();
 
-        if (direction.magnitude > 0.01f) {
-            direction.Normalize();
-
-            controller.SimpleMove(direction * speed);
-
-            transform.rotation = Quaternion.LookRotation(direction);
-        }
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
             OnButtonPress();
+        }
+    }
+
+    void HandleRunning() {
+        Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); 
+        
+        if (direction.magnitude < 0.1) return;
+
+        direction.Normalize();
+
+        controller.SimpleMove(direction * speed);
+
+        transform.rotation = Quaternion.LookRotation(direction);
+
+        HandleRunningCloud();
+    }
+
+    void HandleRunningCloud() {
+        if (Time.frameCount % 20 != 0) return;
+
+        GameObject cloud = Instantiate(runningCloudPrefab, transform.position, Quaternion.identity);
+        runningCloudQueue.Enqueue(cloud);
+
+        if (runningCloudQueue.Count > 5) {
+            while (runningCloudQueue.Count > 5) {
+                GameObject oldCloud = runningCloudQueue.Dequeue();
+                Destroy(oldCloud);
+            }
         }
     }
 
