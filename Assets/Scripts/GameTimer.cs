@@ -14,6 +14,9 @@ public class GameTimer : MonoBehaviour
     }
 
     void UpdateText() {
-        GetComponent<TextMeshProUGUI>().text = timeSpent.ToString("F2");
+        var textComponent = GetComponent<TextMeshProUGUI>();
+        
+        if (textComponent == null) return;
+        textComponent.text = timeSpent.ToString("F2");
     }
 }

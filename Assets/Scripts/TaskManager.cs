@@ -60,7 +60,10 @@ public class TaskManager : MonoBehaviour
         foreach (CompletableTask task in tasks) {
             text += task.name + " " + task.completedSteps + "/" + task.totalSteps + "\n";
         }
-        taskText.text = text;
+
+        if (taskText != null) {
+            taskText.text = text;
+        }
     }
 }
 

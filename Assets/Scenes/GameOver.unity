@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startButton: {fileID: 688933399}
-  nextScene: Scene
+  nextScene: New
 --- !u!4 &610457019
 Transform:
   m_ObjectHideFlags: 0
