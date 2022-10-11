@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     public AudioClip successSound;
     public AudioClip typingSound;
 
+    public ParticleSystem runningCloud;
+
+    private bool isRunning = false;
 
     void Start()
     {
@@ -24,18 +27,32 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));   
+        HandleRunning();
 
-        if (direction.magnitude > 0.01f) {
-            direction.Normalize();
-
-            controller.SimpleMove(direction * speed);
-
-            transform.rotation = Quaternion.LookRotation(direction);
-        }
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
             OnButtonPress();
         }
+    }
+
+    void HandleRunning() {
+        Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));   
+
+        if (direction.magnitude < 0.01f) {
+            isRunning = false;
+            runningCloud.Stop();
+            return;
+        }
+
+        if (!isRunning) {
+            isRunning = true;
+            runningCloud.Play();
+        }
+
+        direction.Normalize();
+
+        controller.SimpleMove(direction * speed);
+
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
     void OnDrawGizmos() {
