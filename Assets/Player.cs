@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 
     public ParticleSystem runningCloud;
 
-    private bool isRunning = false;
+    private Vector3 lastPosition = Vector3.zero;
 
     void Start()
     {
@@ -29,24 +29,30 @@ public class Player : MonoBehaviour
     {
         HandleRunning();
 
+        HandleRunningCloud();
+
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
             OnButtonPress();
+        }
+    }
+
+    void HandleRunningCloud() {
+        if (lastPosition != transform.position) {
+            if (!runningCloud.isEmitting) {
+                runningCloud.Play();
+            }
+            lastPosition = transform.position;
+        } else {
+            if (runningCloud.isEmitting) {
+                runningCloud.Stop();
+            }
         }
     }
 
     void HandleRunning() {
         Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));   
 
-        if (direction.magnitude < 0.01f) {
-            isRunning = false;
-            runningCloud.Stop();
-            return;
-        }
-
-        if (!isRunning) {
-            isRunning = true;
-            runningCloud.Play();
-        }
+        if (direction.magnitude < 0.01f) return;
 
         direction.Normalize();
 
