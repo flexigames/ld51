@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform target;
-
+    private Transform target;
     private Vector3 initialPosition;
 
     void Start() {
         initialPosition = transform.position;
+
+        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
