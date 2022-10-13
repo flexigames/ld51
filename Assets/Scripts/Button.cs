@@ -12,16 +12,22 @@ public class Button : Interactable
 
     private float maxTimeShown = 10 * 1000;
 
-    void Start() {
+    public void Start() {
         counter = maxCounter;
     }
 
     public override void Interact() {
         counter = maxCounter;
         UpdateText();
+        OnInteract();
     }
 
-    public void Update() {
+    public virtual void OnInteract()
+    {
+
+    }
+
+    public virtual void Update() {
         counter -= Time.deltaTime * 1000.0f;
 
         if (counter < 0) {
