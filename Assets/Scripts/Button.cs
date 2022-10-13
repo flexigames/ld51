@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class Button : Interactable
 {
@@ -26,7 +25,7 @@ public class Button : Interactable
         counter -= Time.deltaTime * 1000.0f;
 
         if (counter < 0) {
-            SceneManager.LoadScene("GameOver");
+            Game.OnGameOver();
         }
         UpdateText();
     }

@@ -11,7 +11,10 @@ public class DropoffLocation : MonoBehaviour
     public void DropOff(GameObject item)
     {
         Destroy(item);
-        TaskManager taskManager = FindObjectOfType<TaskManager>();
-        taskManager.IncreaseSteps(updateTaskId);
+
+        if (updateTaskId != null && updateTaskId != "") {
+            TaskManager taskManager = FindObjectOfType<TaskManager>();
+            taskManager.IncreaseSteps(updateTaskId);
+        }
     }
 }

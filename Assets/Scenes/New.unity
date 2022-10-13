@@ -189,6 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 139657016}
+  - component: {fileID: 139657018}
   - component: {fileID: 139657015}
   - component: {fileID: 139657017}
   m_Layer: 0
@@ -239,6 +240,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeSpent: 0
+--- !u!114 &139657018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139657014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f90bffd05f96149f79e2ad343cca7ae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handleGameOver: 1
 --- !u!1001 &165620621
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -810,15 +824,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3683599161229106245, guid: 9ef6a4915c28648b09e4fa59800b37da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.75
+      value: -18.06
       objectReference: {fileID: 0}
     - target: {fileID: 3683599161229106245, guid: 9ef6a4915c28648b09e4fa59800b37da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.59
+      value: 2.61
       objectReference: {fileID: 0}
     - target: {fileID: 3683599161229106245, guid: 9ef6a4915c28648b09e4fa59800b37da, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.82
+      value: 11.55
       objectReference: {fileID: 0}
     - target: {fileID: 3683599161229106245, guid: 9ef6a4915c28648b09e4fa59800b37da, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8569,11 +8583,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2000829579686063635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b39309bfcb5446958c446c26527bab0, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e1b8a0f01b73467595a0202fd99a600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   acceptsItemType: plate
-  updateTaskId: kitchen
+  updateTaskId: 
 --- !u!33 &5982085418330221625
 MeshFilter:
   m_ObjectHideFlags: 0
