@@ -15,6 +15,12 @@ public class Game : MonoBehaviour
         SceneManager.LoadScene("GameOver");
     }
 
+    public static void IncreaseSteps(string taskId)
+    {
+        TaskManager taskManager = FindObjectOfType<TaskManager>();
+        taskManager.IncreaseSteps(taskId);
+    }
+
     private void Awake()
     {
         if (instance != null && instance != this) {

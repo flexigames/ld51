@@ -34,6 +34,14 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
             OnButtonPress();
         }
+
+        if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Space)) {
+            var sinks = FindOfComponentType<Sink>();
+            foreach (var sink in sinks)
+            {
+                sink.Interact();
+            }
+        }
     }
 
     void HandleRunningCloud() {
@@ -82,9 +90,9 @@ public class Player : MonoBehaviour
 
     bool TryUseDropoff() {
         Collider[] colldiers = Physics.OverlapSphere(transform.position, interactDistance);
-        foreach (Collider collider in colldiers) {
-            DropoffLocation dropoff = collider.GetComponent<DropoffLocation>();
-            if (dropoff != null && dropoff.acceptsItemType == holding.GetComponent<PickupItem>().itemType) {
+        var dropOffs = FindOfComponentType<DropoffLocation>();
+        foreach (var dropoff in dropOffs) {
+            if (dropoff.acceptsItemType == holding.GetComponent<PickupItem>().itemType) {
                 dropoff.DropOff(holding.gameObject);
                 PlaySound(successSound);
                 holding = null;
@@ -94,19 +102,34 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    bool TryInteract() {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
-
-        foreach (Collider collider in colliders) {
-            Interactable interactable = collider.GetComponent<Interactable>();
-            if (interactable != null) {
-                interactable.Interact();
-                PlaySound(typingSound);
-                return true;
-            }
+    List<T> FindOfComponentType<T>()
+    {
+        Collider[] colldiers = Physics.OverlapSphere(transform.position, interactDistance);
+        var listOfComponentTypes = new List<T>();
+        foreach (Collider collider in colldiers) {
+            T componentType = collider.GetComponent<T>();
+            if (componentType != null) listOfComponentTypes.Add(componentType);
         }
+        return listOfComponentTypes;
+    }
 
-        return false;
+    T FindOneOfComponentType<T>()
+    {
+        List<T> componentTypes = FindOfComponentType<T>();
+
+        if (componentTypes.Count > 0) return componentTypes[0];
+
+        return default(T);
+    }
+
+    bool TryInteract() {
+        var interactable = FindOneOfComponentType<Interactable>();
+
+        if (interactable == null) return false;
+
+        interactable.Interact();
+        PlaySound(typingSound);
+        return true;
     }
 
     bool TryPickup() {
