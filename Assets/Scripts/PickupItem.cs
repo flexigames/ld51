@@ -2,26 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickupItem: MonoBehaviour
+public class PickupItem: Interactable
 {
     public string itemType;
 
-    Outline outline;
-
-    void Awake()
+    public override bool CanBeUsed(GameObject playerHolding)
     {
-        outline = gameObject.AddComponent<Outline>();
-        outline.enabled = false;
-        outline.OutlineWidth = 4f;
-    }
-
-    public void Focus()
-    {
-        outline.enabled = true;
-    }
-
-    public void UnFocus()
-    {
-        outline.enabled = false;
+        return playerHolding == null;
     }
 }

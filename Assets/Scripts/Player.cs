@@ -14,13 +14,12 @@ public class Player : MonoBehaviour
     public AudioClip pickupSound;
     public AudioClip dropoffSound;
     public AudioClip successSound;
-    public AudioClip typingSound;
 
     public ParticleSystem runningCloud;
 
     private Vector3 lastPosition = Vector3.zero;
 
-    private PickupItem currentFocus;
+    private Interactable currentFocus;
 
     void Start()
     {
@@ -33,7 +32,7 @@ public class Player : MonoBehaviour
 
         HandleRunningCloud();
 
-        FindInteractable();
+        HighlightInteractable();
 
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
             OnButtonPress();
@@ -48,27 +47,37 @@ public class Player : MonoBehaviour
         }
     }
 
-    void FindInteractable()
+    Interactable FindInteractable()
     {
-        // TODO: I still need to make sure picking up and interacting is the same thing
+        var interactables = FindOfComponentType<Interactable>();
 
-        var pickup = FindPickup();
+        foreach (var interactable in interactables)
+        {
+            if (interactable.CanBeUsed(holding)) return interactable;
+        }
 
-        if (pickup == null)
+        return null;
+    }
+
+    void HighlightInteractable()
+    {
+        var interactable = FindInteractable();
+
+        if (interactable == null)
         {
             if (currentFocus != null)
             {
                 currentFocus.UnFocus();
                 currentFocus = null;
             }
-        } else if (pickup != currentFocus)
+        } else if (interactable != currentFocus)
         {
             if (currentFocus != null)
             {
                 currentFocus.UnFocus();
             }
-            pickup.Focus();
-            currentFocus = pickup;
+            interactable.Focus();
+            currentFocus = interactable;
         }
     }
 
@@ -103,16 +112,9 @@ public class Player : MonoBehaviour
 
     void OnButtonPress() {
         var interacted = TryInteract();
-
-        if (interacted) return;
-
-        if (holding != null) {
-            var droppedOff = TryUseDropoff();
-            Debug.Log(droppedOff ? "Dropped off somewhere" : "Dropped on floor");
+        if (!interacted && holding)
+        {
             Drop();
-        } else {
-            var pickedUp = TryPickup();
-            Debug.Log(pickedUp ? "Picked up something" : "Nothing to pick up");
         }
     }
 
@@ -151,12 +153,13 @@ public class Player : MonoBehaviour
     }
 
     bool TryInteract() {
-        var interactable = FindOneOfComponentType<Interactable>();
+        if (currentFocus == null) return false;
 
-        if (interactable == null) return false;
-
-        interactable.Interact();
-        PlaySound(typingSound);
+        currentFocus.Interact();
+        if (currentFocus is PickupItem pickupItem)
+        {
+            Pickup(pickupItem.gameObject);
+        }
         return true;
     }
 
@@ -173,15 +176,6 @@ public class Player : MonoBehaviour
         }
 
         return null;
-    }
-
-    bool TryPickup() {
-        var pickupItem = FindPickup();
-
-        if (pickupItem == null) return false;
-
-        Pickup(pickupItem.gameObject);
-        return true;
     }
 
     void Pickup(GameObject pickupItem) {    

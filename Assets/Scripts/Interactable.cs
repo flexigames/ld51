@@ -2,7 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Interactable: MonoBehaviour
+public class Interactable: MonoBehaviour
 {
-    public abstract void Interact();
+    Outline outline;
+
+    public virtual void Interact() {}
+
+    public virtual bool CanBeUsed(GameObject playerHolding)
+    {
+        return true;
+    }
+
+    void Awake()
+    {
+        outline = gameObject.AddComponent<Outline>();
+        outline.enabled = false;
+        outline.OutlineWidth = 4f;
+    }
+
+    public void Focus()
+    {
+        outline.enabled = true;
+    }
+
+    public void UnFocus()
+    {
+        outline.enabled = false;
+    }
 }
