@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
 
     private Vector3 lastPosition = Vector3.zero;
 
+    private PickupItem currentFocus;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -31,6 +33,8 @@ public class Player : MonoBehaviour
 
         HandleRunningCloud();
 
+        FindInteractable();
+
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
             OnButtonPress();
         }
@@ -41,6 +45,30 @@ public class Player : MonoBehaviour
             {
                 sink.Interact();
             }
+        }
+    }
+
+    void FindInteractable()
+    {
+        // TODO: I still need to make sure picking up and interacting is the same thing
+
+        var pickup = FindPickup();
+
+        if (pickup == null)
+        {
+            if (currentFocus != null)
+            {
+                currentFocus.UnFocus();
+                currentFocus = null;
+            }
+        } else if (pickup != currentFocus)
+        {
+            if (currentFocus != null)
+            {
+                currentFocus.UnFocus();
+            }
+            pickup.Focus();
+            currentFocus = pickup;
         }
     }
 
@@ -132,21 +160,28 @@ public class Player : MonoBehaviour
         return true;
     }
 
-    bool TryPickup() {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
+    PickupItem FindPickup()
+    {
+        var pickupItems = FindOfComponentType<PickupItem>();
 
-        foreach (Collider collider in colliders) {
-            PickupItem pickupItem = collider.GetComponent<PickupItem>();
-            if (pickupItem != null) {
-                if (holding != null && pickupItem.gameObject == holding) {
-                    continue;
-                }
-
-                Pickup(pickupItem.gameObject);
-                return true;
+        foreach (var pickupItem in pickupItems) {
+            if (holding != null && pickupItem.gameObject == holding) {
+                continue;
             }
+
+            return pickupItem;
         }
-        return false;
+
+        return null;
+    }
+
+    bool TryPickup() {
+        var pickupItem = FindPickup();
+
+        if (pickupItem == null) return false;
+
+        Pickup(pickupItem.gameObject);
+        return true;
     }
 
     void Pickup(GameObject pickupItem) {    
