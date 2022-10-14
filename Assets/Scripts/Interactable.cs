@@ -6,7 +6,7 @@ public class Interactable: MonoBehaviour
 {
     Outline outline;
 
-    public virtual void Interact() {}
+    public virtual void Interact(GameObject playerHolding) {}
 
     public virtual bool CanBeUsed(GameObject playerHolding)
     {

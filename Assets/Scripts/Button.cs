@@ -16,7 +16,7 @@ public class Button : Interactable
         counter = maxCounter;
     }
 
-    public override void Interact() {
+    public override void Interact(GameObject playerHolding) {
         counter = maxCounter;
         UpdateText();
         OnInteract();

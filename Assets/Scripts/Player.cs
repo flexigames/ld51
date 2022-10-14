@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
 
     public AudioClip pickupSound;
     public AudioClip dropoffSound;
-    public AudioClip successSound;
 
     public ParticleSystem runningCloud;
 
@@ -42,7 +41,7 @@ public class Player : MonoBehaviour
             var sinks = FindOfComponentType<Sink>();
             foreach (var sink in sinks)
             {
-                sink.Interact();
+                sink.InteractLong();
             }
         }
     }
@@ -53,7 +52,7 @@ public class Player : MonoBehaviour
 
         foreach (var interactable in interactables)
         {
-            if (interactable.CanBeUsed(holding)) return interactable;
+            if (interactable != null && interactable.CanBeUsed(holding)) return interactable;
         }
 
         return null;
@@ -118,20 +117,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    bool TryUseDropoff() {
-        Collider[] colldiers = Physics.OverlapSphere(transform.position, interactDistance);
-        var dropOffs = FindOfComponentType<DropoffLocation>();
-        foreach (var dropoff in dropOffs) {
-            if (dropoff.acceptsItemType == holding.GetComponent<PickupItem>().itemType) {
-                dropoff.DropOff(holding.gameObject);
-                PlaySound(successSound);
-                holding = null;
-                return true;
-            }
-        }
-        return false;
-    }
-
     List<T> FindOfComponentType<T>()
     {
         Collider[] colldiers = Physics.OverlapSphere(transform.position, interactDistance);
@@ -155,7 +140,8 @@ public class Player : MonoBehaviour
     bool TryInteract() {
         if (currentFocus == null) return false;
 
-        currentFocus.Interact();
+        currentFocus.Interact(holding);
+
         if (currentFocus is PickupItem pickupItem)
         {
             Pickup(pickupItem.gameObject);

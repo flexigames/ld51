@@ -22,6 +22,11 @@ public class Door : Button
         secondsUntilNextRing = Random.Range(2f, 6f);
     }
 
+    public override bool CanBeUsed(GameObject playerHolding)
+    {
+        return waiting;
+    }
+
     public override void Update()
     {
         if (waiting)

@@ -23,13 +23,13 @@ public class Sink : DropoffLocation {
         progressBarContainer.SetActive(Time.time - lastProgress < 0.2);
     }
 
-    public override void DropOff(GameObject item)
+    public override void Interact(GameObject item)
     {
         AddDirtyPlate();
         Destroy(item);
     }
 
-    public void Interact()
+    public void InteractLong()
     {
         if (numberOfDirtyPlates <= 0) return;
 
@@ -60,6 +60,7 @@ public class Sink : DropoffLocation {
     void CleanPlate()
     {
         Game.IncreaseSteps("kitchen");
+        Game.PlaySound("success");
 
         numberOfDirtyPlates--;
 
