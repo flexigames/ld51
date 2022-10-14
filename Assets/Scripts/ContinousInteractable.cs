@@ -14,6 +14,9 @@ public class ContinousInteractable: Interactable {
     public override void Interact(GameObject playerHolding)
     {
         secondsSpent += Time.deltaTime;
+
+        progressBar.SetProgress(secondsSpent / secondsNeeded);
+
         if (secondsSpent > secondsNeeded)
         {
             OnDone();
@@ -21,4 +24,16 @@ public class ContinousInteractable: Interactable {
     }
 
     public virtual void OnDone() {}
+
+    private ProgressBar progressBar;
+
+    public void Start()
+    {
+        progressBar = ProgressBar.Add(transform);
+    }
+
+    public void Update()
+    {
+        progressBar.gameObject.transform.rotation = Quaternion.identity;
+    }
 }

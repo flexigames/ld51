@@ -12,11 +12,12 @@ public class Sink : DropoffLocation {
 
     public float secondsNeededPerTask = 2;
 
-    public GameObject progressBar;
+    private ProgressBar progressBar;
 
-    public GameObject progressBarContainer;
-
-    private float lastProgress;
+    public void Start()
+    {
+        progressBar = ProgressBar.Add(transform);
+    }
 
     public override bool IsContinous()
     {
@@ -26,11 +27,6 @@ public class Sink : DropoffLocation {
     public override bool CanBeUsed(GameObject playerHolding)
     {
         return CanDropOff(playerHolding) || numberOfDirtyPlates > 0;
-    }
-
-    void Update()
-    {
-        progressBarContainer.SetActive(Time.time - lastProgress < 0.2);
     }
 
     public override void Interact(GameObject playerHolding)
@@ -57,9 +53,7 @@ public class Sink : DropoffLocation {
     {
         timeSpentOnTask += Time.deltaTime;
 
-        progressBar.transform.localScale = new Vector3(timeSpentOnTask / secondsNeededPerTask, 1, 1);
-
-        lastProgress = Time.time;
+        progressBar.SetProgress(timeSpentOnTask / secondsNeededPerTask);
     }
 
     void AddDirtyPlate()
