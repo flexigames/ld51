@@ -13,6 +13,11 @@ public class Interactable: MonoBehaviour
         return true;
     }
 
+    public virtual bool IsContinous()
+    {
+        return false;
+    }
+
     void Awake()
     {
         outline = gameObject.AddComponent<Outline>();

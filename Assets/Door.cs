@@ -19,7 +19,7 @@ public class Door : Button
 
     private void QueueRing()
     {
-        secondsUntilNextRing = Random.Range(6f, 11f);
+        secondsUntilNextRing = Random.Range(2f, 7f);
     }
 
     public override bool CanBeUsed(GameObject playerHolding)

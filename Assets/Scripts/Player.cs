@@ -35,19 +35,14 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) {
             OnButtonPress();
+            return;
         }
 
         if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Space)) {
-            if (currentFocus is ContinousInteractable interactable)
+            if (currentFocus != null && currentFocus.IsContinous())
             {
-                interactable.ContinousInteract();
+                currentFocus.Interact(holding);
             }
-
-//            var sinks = FindOfComponentType<Sink>();
-//            foreach (var sink in sinks)
-//            {
-//                sink.InteractLong();
-//            }
         }
     }
 

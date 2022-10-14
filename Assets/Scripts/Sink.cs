@@ -18,19 +18,30 @@ public class Sink : DropoffLocation {
 
     private float lastProgress;
 
+    public override bool IsContinous()
+    {
+        return numberOfDirtyPlates > 0;
+    }
+
+    public override bool CanBeUsed(GameObject playerHolding)
+    {
+        return CanDropOff(playerHolding) || numberOfDirtyPlates > 0;
+    }
+
     void Update()
     {
         progressBarContainer.SetActive(Time.time - lastProgress < 0.2);
     }
 
-    public override void Interact(GameObject item)
+    public override void Interact(GameObject playerHolding)
     {
-        AddDirtyPlate();
-        Destroy(item);
-    }
+        if (CanDropOff(playerHolding))
+        {
+            Debug.Log("Add dirty plate");
+            AddDirtyPlate();
+            Destroy(playerHolding);
+        }
 
-    public void InteractLong()
-    {
         if (numberOfDirtyPlates <= 0) return;
 
         UpdateTimeSpent();

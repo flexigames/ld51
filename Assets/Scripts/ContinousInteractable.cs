@@ -6,7 +6,12 @@ public class ContinousInteractable: Interactable {
     public float secondsNeeded = 2;
     public float secondsSpent = 0;
 
-    public virtual void ContinousInteract()
+    public override bool IsContinous()
+    {
+        return true;
+    }
+
+    public override void Interact(GameObject playerHolding)
     {
         secondsSpent += Time.deltaTime;
         if (secondsSpent > secondsNeeded)
