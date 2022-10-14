@@ -38,11 +38,16 @@ public class Player : MonoBehaviour
         }
 
         if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Space)) {
-            var sinks = FindOfComponentType<Sink>();
-            foreach (var sink in sinks)
+            if (currentFocus is ContinousInteractable interactable)
             {
-                sink.InteractLong();
+                interactable.ContinousInteract();
             }
+
+//            var sinks = FindOfComponentType<Sink>();
+//            foreach (var sink in sinks)
+//            {
+//                sink.InteractLong();
+//            }
         }
     }
 

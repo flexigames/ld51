@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90bffd05f96149f79e2ad343cca7ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handleGameOver: 1
+  handleGameOver: 0
   audioClips:
   - {fileID: 8300000, guid: ed63c05280aa74d38a6e7214f3842a15, type: 3}
 --- !u!82 &139657019
@@ -2203,6 +2203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 962db4fa94c5b4b9ab55fae93f5a8dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  secondsNeeded: 2
+  secondsSpent: 0
   possibleItems:
   - {fileID: 8712946256950084710, guid: aeb3b5a60ca20450b80d9a1c377e2468, type: 3}
   - {fileID: 4059174034658330367, guid: 9ef6a4915c28648b09e4fa59800b37da, type: 3}
