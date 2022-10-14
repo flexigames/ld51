@@ -6,7 +6,7 @@ using TMPro;
 public class Button : Interactable
 {
     public TextMeshPro displayMesh;
-    private float counter;
+    protected float counter;
 
     public float maxCounter = 11 * 1000;
 
